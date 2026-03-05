@@ -1,0 +1,717 @@
+<!-- history of war
+<!--index.html  Date: March 05, 2026 11:27 PM-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Short History of Warfare</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=IM+Fell+English:ital@0;1&family=Courier+Prime&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1208;
+    --parchment: #f5ead8;
+    --parchment-dark: #e8d5b0;
+    --blood: #8b1a1a;
+    --brass: #b8860b;
+    --steel: #607080;
+    --fade: rgba(26,18,8,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--parchment);
+    color: var(--ink);
+    font-family: 'IM Fell English', Georgia, serif;
+    overflow-x: hidden;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+  }
+
+  .masthead {
+    text-align: center;
+    padding: 60px 20px 30px;
+    border-bottom: 3px double var(--brass);
+    position: relative;
+  }
+
+  .masthead::before, .masthead::after {
+    content: '✦';
+    color: var(--brass);
+    font-size: 1.4rem;
+    position: absolute;
+    top: 64px;
+  }
+  .masthead::before { left: 40px; }
+  .masthead::after { right: 40px; }
+
+  .overline {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--blood);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.6rem, 7vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .subtitle {
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--steel);
+    margin-top: 10px;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px auto;
+    max-width: 300px;
+  }
+  .divider span { flex: 1; height: 1px; background: var(--brass); }
+  .divider em { color: var(--brass); font-style: normal; font-size: 1.1rem; }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  .era {
+    margin: 50px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .era.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  .era:nth-child(even) { direction: rtl; }
+  .era:nth-child(even) > * { direction: ltr; }
+
+  .era-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--blood);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .era-text .date {
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    color: var(--brass);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .era-text p {
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: #2a1f10;
+  }
+
+  .era-text p + p { margin-top: 10px; }
+
+  .key-tech {
+    margin-top: 14px;
+    padding: 10px 14px;
+    border-left: 3px solid var(--brass);
+    background: var(--fade);
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    color: var(--steel);
+  }
+
+  .diagram-box {
+    background: var(--parchment-dark);
+    border: 1.5px solid var(--brass);
+    padding: 16px;
+    position: relative;
+  }
+
+  .diagram-box::before {
+    content: attr(data-label);
+    position: absolute;
+    top: -10px;
+    left: 12px;
+    background: var(--parchment-dark);
+    padding: 0 6px;
+    font-family: 'Courier Prime', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--brass);
+  }
+
+  svg text { font-family: 'Courier Prime', monospace; }
+
+  .timeline-bar {
+    display: flex;
+    align-items: center;
+    margin: 40px 0 10px;
+    position: relative;
+  }
+  .timeline-bar::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 50%;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, var(--brass) 0, var(--brass) 8px, transparent 8px, transparent 16px);
+  }
+  .tl-node {
+    position: relative;
+    z-index: 1;
+    background: var(--parchment);
+    border: 2px solid var(--brass);
+    border-radius: 50%;
+    width: 12px; height: 12px;
+    flex-shrink: 0;
+  }
+  .tl-space { flex: 1; }
+
+  @media (max-width: 640px) {
+    .era { grid-template-columns: 1fr; direction: ltr; }
+    .era:nth-child(even) { direction: ltr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="overline">An illustrated chronicle</div>
+  <h1>A Short History<br>of Warfare</h1>
+  <p class="subtitle">From spear to satellite — how humanity has made war</p>
+  <div class="divider"><span></span><em>⚔</em><span></span></div>
+</div>
+
+<div class="container">
+
+  <!-- Timeline bar -->
+  <div class="timeline-bar">
+    <div class="tl-node"></div><div class="tl-space"></div>
+    <div class="tl-node"></div><div class="tl-space"></div>
+    <div class="tl-node"></div><div class="tl-space"></div>
+    <div class="tl-node"></div><div class="tl-space"></div>
+    <div class="tl-node"></div><div class="tl-space"></div>
+    <div class="tl-node"></div>
+  </div>
+
+  <!-- ERA 1: Ancient -->
+  <div class="era">
+    <div class="era-text">
+      <span class="date">~3000 BCE – 500 CE</span>
+      <h2>Ancient Warfare</h2>
+      <p>The first organised wars grew from competition over land, water, and trade routes in Mesopotamia and Egypt. City-states fielded professional armies armed with bronze weapons, chariots, and composite bows — a vast leap from tribal raiding.</p>
+      <p>The Greeks perfected the <em>phalanx</em>: a wall of overlapping shields and long spears that turned infantry into a single impenetrable organism. Rome refined this further into the flexible <em>manipular legion</em>, capable of adapting on broken terrain.</p>
+      <div class="key-tech">KEY TECH › bronze sword · chariot · composite bow · phalanx · siege ram</div>
+    </div>
+    <div class="diagram-box" data-label="FIG I — The Greek Phalanx">
+      <svg viewBox="0 0 280 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <!-- ground -->
+        <line x1="10" y1="180" x2="270" y2="180" stroke="#b8860b" stroke-width="1" stroke-dasharray="4,3"/>
+        <!-- ranks of soldiers -->
+        <g fill="#607080" stroke="#1a1208" stroke-width="0.8">
+          <!-- rank 1 -->
+          <g transform="translate(20,120)">
+            <rect x="0" y="0" width="14" height="20" rx="2"/>
+            <circle cx="7" cy="-8" r="6"/>
+            <!-- shield -->
+            <ellipse cx="7" cy="10" rx="9" ry="11" fill="#8b1a1a" opacity="0.7"/>
+            <!-- spear -->
+            <line x1="7" y1="-14" x2="7" y2="-50" stroke="#1a1208" stroke-width="1.5"/>
+            <polygon points="7,-54 4,-46 10,-46" fill="#b8860b"/>
+          </g>
+          <g transform="translate(45,120)">
+            <rect x="0" y="0" width="14" height="20" rx="2"/>
+            <circle cx="7" cy="-8" r="6"/>
+            <ellipse cx="7" cy="10" rx="9" ry="11" fill="#8b1a1a" opacity="0.7"/>
+            <line x1="7" y1="-14" x2="7" y2="-50" stroke="#1a1208" stroke-width="1.5"/>
+            <polygon points="7,-54 4,-46 10,-46" fill="#b8860b"/>
+          </g>
+          <g transform="translate(70,120)">
+            <rect x="0" y="0" width="14" height="20" rx="2"/>
+            <circle cx="7" cy="-8" r="6"/>
+            <ellipse cx="7" cy="10" rx="9" ry="11" fill="#8b1a1a" opacity="0.7"/>
+            <line x1="7" y1="-14" x2="7" y2="-50" stroke="#1a1208" stroke-width="1.5"/>
+            <polygon points="7,-54 4,-46 10,-46" fill="#b8860b"/>
+          </g>
+          <g transform="translate(95,120)">
+            <rect x="0" y="0" width="14" height="20" rx="2"/>
+            <circle cx="7" cy="-8" r="6"/>
+            <ellipse cx="7" cy="10" rx="9" ry="11" fill="#8b1a1a" opacity="0.7"/>
+            <line x1="7" y1="-14" x2="7" y2="-50" stroke="#1a1208" stroke-width="1.5"/>
+            <polygon points="7,-54 4,-46 10,-46" fill="#b8860b"/>
+          </g>
+          <g transform="translate(120,120)">
+            <rect x="0" y="0" width="14" height="20" rx="2"/>
+            <circle cx="7" cy="-8" r="6"/>
+            <ellipse cx="7" cy="10" rx="9" ry="11" fill="#8b1a1a" opacity="0.7"/>
+            <line x1="7" y1="-14" x2="7" y2="-50" stroke="#1a1208" stroke-width="1.5"/>
+            <polygon points="7,-54 4,-46 10,-46" fill="#b8860b"/>
+          </g>
+          <!-- rank 2 (behind, shorter spears) -->
+          <g transform="translate(20,148)" opacity="0.55">
+            <rect x="0" y="0" width="14" height="20" rx="2"/>
+            <circle cx="7" cy="-8" r="6"/>
+            <ellipse cx="7" cy="10" rx="9" ry="11" fill="#8b1a1a" opacity="0.6"/>
+            <line x1="7" y1="-14" x2="14" y2="-44" stroke="#1a1208" stroke-width="1.3"/>
+            <polygon points="14,-48 11,-40 17,-40" fill="#b8860b"/>
+          </g>
+          <g transform="translate(45,148)" opacity="0.55">
+            <rect x="0" y="0" width="14" height="20" rx="2"/>
+            <circle cx="7" cy="-8" r="6"/>
+            <ellipse cx="7" cy="10" rx="9" ry="11" fill="#8b1a1a" opacity="0.6"/>
+            <line x1="7" y1="-14" x2="14" y2="-44" stroke="#1a1208" stroke-width="1.3"/>
+            <polygon points="14,-48 11,-40 17,-40" fill="#b8860b"/>
+          </g>
+          <g transform="translate(70,148)" opacity="0.55">
+            <rect x="0" y="0" width="14" height="20" rx="2"/>
+            <circle cx="7" cy="-8" r="6"/>
+            <ellipse cx="7" cy="10" rx="9" ry="11" fill="#8b1a1a" opacity="0.6"/>
+            <line x1="7" y1="-14" x2="14" y2="-44" stroke="#1a1208" stroke-width="1.3"/>
+            <polygon points="14,-48 11,-40 17,-40" fill="#b8860b"/>
+          </g>
+          <g transform="translate(95,148)" opacity="0.55">
+            <rect x="0" y="0" width="14" height="20" rx="2"/>
+            <circle cx="7" cy="-8" r="6"/>
+            <ellipse cx="7" cy="10" rx="9" ry="11" fill="#8b1a1a" opacity="0.6"/>
+            <line x1="7" y1="-14" x2="14" y2="-44" stroke="#1a1208" stroke-width="1.3"/>
+            <polygon points="14,-48 11,-40 17,-40" fill="#b8860b"/>
+          </g>
+          <g transform="translate(120,148)" opacity="0.55">
+            <rect x="0" y="0" width="14" height="20" rx="2"/>
+            <circle cx="7" cy="-8" r="6"/>
+            <ellipse cx="7" cy="10" rx="9" ry="11" fill="#8b1a1a" opacity="0.6"/>
+            <line x1="7" y1="-14" x2="14" y2="-44" stroke="#1a1208" stroke-width="1.3"/>
+            <polygon points="14,-48 11,-40 17,-40" fill="#b8860b"/>
+          </g>
+        </g>
+        <!-- labels -->
+        <text x="172" y="85" font-size="8" fill="#607080">Overlapping</text>
+        <text x="172" y="97" font-size="8" fill="#607080">shields form wall</text>
+        <line x1="168" y1="95" x2="148" y2="118" stroke="#b8860b" stroke-width="0.8"/>
+        <text x="172" y="140" font-size="8" fill="#607080">Rear ranks pass</text>
+        <text x="172" y="152" font-size="8" fill="#607080">spears forward</text>
+        <line x1="168" y1="148" x2="152" y2="148" stroke="#b8860b" stroke-width="0.8"/>
+        <text x="10" y="197" font-size="7.5" fill="#b8860b">← DIRECTION OF ADVANCE →</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ERA 2: Medieval -->
+  <div class="era">
+    <div class="era-text">
+      <span class="date">500 – 1450 CE</span>
+      <h2>Medieval Warfare</h2>
+      <p>The fall of Rome fragmented military power into feudal systems. The armoured knight on horseback dominated the battlefield for centuries — a mobile, heavily-protected shock unit that could break enemy lines with a well-timed charge.</p>
+      <p>Castles and siege warfare became equally central. Taking fortified towns required elaborate machinery: trebuchets, battering rams, siege towers — and sometimes simply starving defenders into submission. The Mongols combined mobility and terror to extraordinary effect, conquering the largest contiguous empire in history.</p>
+      <div class="key-tech">KEY TECH › castle · trebuchet · mounted knight · crossbow · longbow</div>
+    </div>
+    <div class="diagram-box" data-label="FIG II — Trebuchet Mechanics">
+      <svg viewBox="0 0 280 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <!-- ground -->
+        <rect x="0" y="175" width="280" height="25" fill="#c8a96a" opacity="0.3"/>
+        <line x1="0" y1="175" x2="280" y2="175" stroke="#b8860b" stroke-width="1"/>
+
+        <!-- base frame -->
+        <line x1="80" y1="175" x2="80" y2="120" stroke="#1a1208" stroke-width="3"/>
+        <line x1="160" y1="175" x2="160" y2="120" stroke="#1a1208" stroke-width="3"/>
+        <line x1="70" y1="120" x2="170" y2="120" stroke="#1a1208" stroke-width="2.5"/>
+        <!-- wheels -->
+        <circle cx="80" cy="175" r="8" fill="none" stroke="#1a1208" stroke-width="2"/>
+        <circle cx="160" cy="175" r="8" fill="none" stroke="#1a1208" stroke-width="2"/>
+        <!-- axle -->
+        <circle cx="120" cy="118" r="5" fill="#b8860b"/>
+
+        <!-- COCKED ARM (short arm down with counterweight) -->
+        <line x1="120" y1="118" x2="90" y2="148" stroke="#607080" stroke-width="3" opacity="0.35"/>
+        <rect x="72" y="148" width="22" height="18" rx="3" fill="#607080" opacity="0.35"/>
+        <text x="79" y="160" font-size="7" fill="#parchment" opacity="0.6">W</text>
+
+        <!-- RELEASED ARM (long arm up, sling releasing) -->
+        <line x1="120" y1="118" x2="200" y2="58" stroke="#1a1208" stroke-width="3"/>
+        <!-- sling -->
+        <line x1="200" y1="58" x2="222" y2="42" stroke="#1a1208" stroke-width="1.5" stroke-dasharray="3,2"/>
+        <!-- projectile -->
+        <circle cx="226" cy="38" r="7" fill="#607080" stroke="#1a1208" stroke-width="1"/>
+
+        <!-- trajectory arc -->
+        <path d="M226,38 Q260,10 270,50" fill="none" stroke="#8b1a1a" stroke-width="1" stroke-dasharray="4,3"/>
+        <!-- arrow on trajectory -->
+        <polygon points="270,50 263,44 268,56" fill="#8b1a1a"/>
+
+        <!-- counterweight -->
+        <rect x="82" y="60" width="26" height="22" rx="3" fill="#1a1208"/>
+        <text x="89" y="74" font-size="7.5" fill="#f5ead8">CWT</text>
+
+        <!-- labels -->
+        <text x="85" y="53" font-size="7.5" fill="#607080">Counterweight</text>
+        <text x="85" y="63" font-size="7.5" fill="#607080">falls...</text>
+        <text x="218" y="28" font-size="7.5" fill="#607080">...projectile</text>
+        <text x="218" y="38" font-size="7.5" fill="#607080">launches</text>
+        <text x="255" y="68" font-size="7.5" fill="#8b1a1a">~300m</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ERA 3: Gunpowder -->
+  <div class="era">
+    <div class="era-text">
+      <span class="date">1450 – 1800 CE</span>
+      <h2>The Gunpowder Age</h2>
+      <p>Gunpowder, originating in Tang Dynasty China, reached Europe in the 13th century and rewrote the rules of war by the 15th. Cannons made castle walls obsolete; muskets democratised killing — any conscripted peasant could now fell an armoured knight.</p>
+      <p>Armies adopted rigid linear tactics: long lines of musketeers firing in rolling volleys while artillery pounded the enemy. The <em>musket-and-pike</em> combination slowly gave way to the <em>flintlock with bayonet</em> — a single weapon combining firepower and close-quarters capability. Navies became the true arbiters of empire.</p>
+      <div class="key-tech">KEY TECH › cannon · musket · flintlock · bayonet · field artillery · warship</div>
+    </div>
+    <div class="diagram-box" data-label="FIG III — Linear Volley Tactics">
+      <svg viewBox="0 0 280 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <!-- ground -->
+        <line x1="10" y1="182" x2="270" y2="182" stroke="#b8860b" stroke-width="1" stroke-dasharray="4,3"/>
+        <!-- smoke puffs -->
+        <g fill="#d4c4a8" opacity="0.6">
+          <circle cx="55" cy="110" r="10"/>
+          <circle cx="65" cy="105" r="12"/>
+          <circle cx="75" cy="108" r="9"/>
+          <circle cx="110" cy="110" r="10"/>
+          <circle cx="120" cy="104" r="13"/>
+          <circle cx="130" cy="109" r="9"/>
+        </g>
+
+        <!-- muzzle flashes -->
+        <g fill="#b8860b" opacity="0.8">
+          <polygon points="38,122 44,118 44,126"/>
+          <polygon points="93,122 99,118 99,126"/>
+          <polygon points="148,122 154,118 154,126"/>
+        </g>
+
+        <!-- Front rank (kneeling/firing) -->
+        <g fill="#607080" stroke="#1a1208" stroke-width="0.8">
+          <!-- soldier 1 kneeling -->
+          <g transform="translate(10,130)">
+            <circle cx="8" cy="-6" r="5"/>
+            <rect x="3" y="0" width="10" height="14" rx="2"/>
+            <line x1="14" y1="5" x2="30" y2="5" stroke="#1a1208" stroke-width="2"/><!-- musket -->
+          </g>
+          <!-- soldier 2 -->
+          <g transform="translate(37,130)">
+            <circle cx="8" cy="-6" r="5"/>
+            <rect x="3" y="0" width="10" height="14" rx="2"/>
+            <line x1="14" y1="5" x2="30" y2="5" stroke="#1a1208" stroke-width="2"/>
+          </g>
+          <!-- soldier 3 -->
+          <g transform="translate(64,130)">
+            <circle cx="8" cy="-6" r="5"/>
+            <rect x="3" y="0" width="10" height="14" rx="2"/>
+            <line x1="14" y1="5" x2="30" y2="5" stroke="#1a1208" stroke-width="2"/>
+          </g>
+          <!-- soldier 4 -->
+          <g transform="translate(91,130)">
+            <circle cx="8" cy="-6" r="5"/>
+            <rect x="3" y="0" width="10" height="14" rx="2"/>
+            <line x1="14" y1="5" x2="30" y2="5" stroke="#1a1208" stroke-width="2"/>
+          </g>
+          <!-- soldier 5 -->
+          <g transform="translate(118,130)">
+            <circle cx="8" cy="-6" r="5"/>
+            <rect x="3" y="0" width="10" height="14" rx="2"/>
+            <line x1="14" y1="5" x2="30" y2="5" stroke="#1a1208" stroke-width="2"/>
+          </g>
+        </g>
+
+        <!-- Second rank (standing, reloading) -->
+        <g fill="#607080" stroke="#1a1208" stroke-width="0.7" opacity="0.65">
+          <g transform="translate(10,148)">
+            <circle cx="8" cy="-8" r="5"/>
+            <rect x="3" y="0" width="10" height="16" rx="2"/>
+            <line x1="8" y1="-14" x2="8" y2="-38" stroke="#1a1208" stroke-width="2"/><!-- musket upright -->
+          </g>
+          <g transform="translate(37,148)">
+            <circle cx="8" cy="-8" r="5"/>
+            <rect x="3" y="0" width="10" height="16" rx="2"/>
+            <line x1="8" y1="-14" x2="8" y2="-38" stroke="#1a1208" stroke-width="2"/>
+          </g>
+          <g transform="translate(64,148)">
+            <circle cx="8" cy="-8" r="5"/>
+            <rect x="3" y="0" width="10" height="16" rx="2"/>
+            <line x1="8" y1="-14" x2="8" y2="-38" stroke="#1a1208" stroke-width="2"/>
+          </g>
+          <g transform="translate(91,148)">
+            <circle cx="8" cy="-8" r="5"/>
+            <rect x="3" y="0" width="10" height="16" rx="2"/>
+            <line x1="8" y1="-14" x2="8" y2="-38" stroke="#1a1208" stroke-width="2"/>
+          </g>
+          <g transform="translate(118,148)">
+            <circle cx="8" cy="-8" r="5"/>
+            <rect x="3" y="0" width="10" height="16" rx="2"/>
+            <line x1="8" y1="-14" x2="8" y2="-38" stroke="#1a1208" stroke-width="2"/>
+          </g>
+        </g>
+
+        <!-- annotations -->
+        <text x="170" y="105" font-size="7.5" fill="#607080">Rank 1 — fires</text>
+        <line x1="165" y1="108" x2="148" y2="126" stroke="#b8860b" stroke-width="0.8"/>
+        <text x="170" y="135" font-size="7.5" fill="#607080">Rank 2 — reloads</text>
+        <line x1="165" y1="136" x2="148" y2="146" stroke="#b8860b" stroke-width="0.8"/>
+        <text x="170" y="162" font-size="7.5" fill="#607080">Rolling volleys =</text>
+        <text x="170" y="173" font-size="7.5" fill="#607080">continuous fire</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ERA 4: Industrial -->
+  <div class="era">
+    <div class="era-text">
+      <span class="date">1800 – 1945 CE</span>
+      <h2>Industrial Warfare</h2>
+      <p>The Industrial Revolution transformed war on a scale no previous era could imagine. Railways moved millions of troops; factories produced rifles, shells, and barbed wire at unprecedented volume. The American Civil War (1861–65) gave the world a preview: massed rifle fire, entrenchments, and industrial attrition.</p>
+      <p>The World Wars brought this logic to its catastrophic conclusion. Machine guns, poison gas, artillery barrages, tanks, aircraft, and submarines all emerged in rapid succession. By 1945, atomic bombs had been dropped on two cities, and warfare had acquired the potential for civilisational annihilation.</p>
+      <div class="key-tech">KEY TECH › rifle · machine gun · poison gas · tank · aircraft · submarine · nuclear bomb</div>
+    </div>
+    <div class="diagram-box" data-label="FIG IV — WW1 Trench System">
+      <svg viewBox="0 0 280 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <!-- background sky -->
+        <rect x="0" y="0" width="280" height="100" fill="#d4c4a8" opacity="0.3"/>
+        <!-- no man's land -->
+        <rect x="0" y="90" width="280" height="30" fill="#c4a870" opacity="0.5"/>
+        <!-- shell craters in no man's land -->
+        <ellipse cx="60" cy="105" rx="15" ry="8" fill="#a08050" opacity="0.4"/>
+        <ellipse cx="140" cy="100" rx="12" ry="6" fill="#a08050" opacity="0.4"/>
+        <ellipse cx="210" cy="108" rx="10" ry="5" fill="#a08050" opacity="0.4"/>
+        <!-- barbed wire symbols -->
+        <g stroke="#1a1208" stroke-width="0.8" fill="none">
+          <path d="M20,92 Q25,88 30,92 Q35,96 40,92 Q45,88 50,92 Q55,96 60,92 Q65,88 70,92 Q75,96 80,92 Q85,88 90,92"/>
+          <path d="M190,92 Q195,88 200,92 Q205,96 210,92 Q215,88 220,92 Q225,96 230,92 Q235,88 240,92 Q245,96 250,92 Q255,88 260,92"/>
+        </g>
+        <!-- left (Allied) trench -->
+        <path d="M0,120 L90,120 L90,170 L0,170 Z" fill="#8b7355" opacity="0.5"/>
+        <rect x="0" y="116" width="90" height="8" fill="#6b5535"/>
+        <!-- sandbags left -->
+        <g fill="#8b7040" stroke="#1a1208" stroke-width="0.5">
+          <ellipse cx="10" cy="116" rx="8" ry="5"/>
+          <ellipse cx="26" cy="116" rx="8" ry="5"/>
+          <ellipse cx="42" cy="116" rx="8" ry="5"/>
+          <ellipse cx="58" cy="116" rx="8" ry="5"/>
+          <ellipse cx="74" cy="116" rx="8" ry="5"/>
+          <ellipse cx="86" cy="116" rx="6" ry="5"/>
+        </g>
+        <!-- soldier in left trench peeking -->
+        <g transform="translate(20,117)" fill="#607080" stroke="#1a1208" stroke-width="0.7">
+          <circle cx="8" cy="-3" r="5"/>
+          <rect x="3" y="3" width="10" height="16" rx="2"/>
+          <line x1="14" y1="6" x2="28" y2="4" stroke="#1a1208" stroke-width="1.8"/>
+        </g>
+        <g transform="translate(50,117)" fill="#607080" stroke="#1a1208" stroke-width="0.7">
+          <circle cx="8" cy="-3" r="5"/>
+          <rect x="3" y="3" width="10" height="16" rx="2"/>
+          <line x1="14" y1="6" x2="28" y2="4" stroke="#1a1208" stroke-width="1.8"/>
+        </g>
+
+        <!-- right (German) trench -->
+        <path d="M190,120 L280,120 L280,170 L190,170 Z" fill="#607080" opacity="0.4"/>
+        <rect x="190" y="116" width="90" height="8" fill="#4a5560"/>
+        <!-- sandbags right -->
+        <g fill="#607080" stroke="#1a1208" stroke-width="0.5">
+          <ellipse cx="196" cy="116" rx="6" ry="5"/>
+          <ellipse cx="210" cy="116" rx="8" ry="5"/>
+          <ellipse cx="226" cy="116" rx="8" ry="5"/>
+          <ellipse cx="242" cy="116" rx="8" ry="5"/>
+          <ellipse cx="258" cy="116" rx="8" ry="5"/>
+          <ellipse cx="274" cy="116" rx="6" ry="5"/>
+        </g>
+        <!-- soldier in right trench -->
+        <g transform="translate(215,117)" fill="#4a5560" stroke="#1a1208" stroke-width="0.7">
+          <circle cx="8" cy="-3" r="5"/>
+          <rect x="3" y="3" width="10" height="16" rx="2"/>
+          <line x1="1" y1="6" x2="-13" y2="4" stroke="#1a1208" stroke-width="1.8"/>
+        </g>
+
+        <!-- labels -->
+        <text x="30" y="195" font-size="7.5" fill="#607080">Allied trench</text>
+        <text x="200" y="195" font-size="7.5" fill="#4a5560">Enemy trench</text>
+        <text x="104" y="85" font-size="7.5" fill="#8b1a1a" text-anchor="middle">NO MAN'S LAND</text>
+        <text x="140" y="95" font-size="6.5" fill="#607080" text-anchor="middle">~50–250 metres</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ERA 5: Cold War + Modern -->
+  <div class="era">
+    <div class="era-text">
+      <span class="date">1945 – 2000 CE</span>
+      <h2>The Cold War Era</h2>
+      <p>The atomic bomb created a paradox: the most powerful nations on earth became reluctant to fight each other directly. Deterrence — the threat of mutual assured destruction — held the superpowers in an anxious standoff for forty years.</p>
+      <p>War instead became proxy, guerrilla, and counter-insurgent. Korea, Vietnam, Afghanistan, and Angola were fought with conventional weapons but in the shadow of nuclear arsenals. Helicopter-borne mobility, precision guided munitions, and electronic warfare emerged as the defining technologies of the era.</p>
+      <div class="key-tech">KEY TECH › nuclear warhead · helicopter · jet aircraft · guided missile · electronic jamming</div>
+    </div>
+    <div class="diagram-box" data-label="FIG V — Mutual Assured Destruction">
+      <svg viewBox="0 0 280 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <!-- USA side -->
+        <rect x="10" y="140" width="60" height="40" rx="4" fill="#8b1a1a" opacity="0.7"/>
+        <text x="40" y="155" font-size="7.5" fill="#f5ead8" text-anchor="middle" font-family="Courier Prime, monospace">USA</text>
+        <text x="40" y="167" font-size="6.5" fill="#f5ead8" text-anchor="middle" font-family="Courier Prime, monospace">~5,000 warheads</text>
+        <!-- USA missiles going right and up -->
+        <g stroke="#8b1a1a" stroke-width="1.5" fill="none">
+          <path d="M70,145 Q140,80 210,145" stroke-dasharray="5,4"/>
+          <path d="M70,155 Q140,60 210,155" stroke-dasharray="5,4"/>
+        </g>
+        <!-- arrowheads -->
+        <polygon points="210,145 204,139 215,139" fill="#8b1a1a"/>
+        <polygon points="210,155 204,149 215,149" fill="#8b1a1a"/>
+
+        <!-- USSR side -->
+        <rect x="210" y="140" width="60" height="40" rx="4" fill="#607080" opacity="0.7"/>
+        <text x="240" y="155" font-size="7.5" fill="#f5ead8" text-anchor="middle" font-family="Courier Prime, monospace">USSR</text>
+        <text x="240" y="167" font-size="6.5" fill="#f5ead8" text-anchor="middle" font-family="Courier Prime, monospace">~4,000 warheads</text>
+        <!-- USSR missiles going left and up -->
+        <g stroke="#607080" stroke-width="1.5" fill="none">
+          <path d="M210,145 Q140,80 70,145" stroke-dasharray="5,4"/>
+          <path d="M210,155 Q140,60 70,155" stroke-dasharray="5,4"/>
+        </g>
+        <polygon points="70,145 76,139 65,139" fill="#607080"/>
+        <polygon points="70,155 76,149 65,149" fill="#607080"/>
+
+        <!-- explosion / mutual destruction in centre -->
+        <g transform="translate(140,95)">
+          <circle cx="0" cy="0" r="22" fill="#b8860b" opacity="0.2"/>
+          <circle cx="0" cy="0" r="14" fill="#b8860b" opacity="0.3"/>
+          <circle cx="0" cy="0" r="7" fill="#8b1a1a" opacity="0.7"/>
+          <!-- spiky explosion -->
+          <g stroke="#8b1a1a" stroke-width="1.2" fill="none">
+            <line x1="0" y1="-22" x2="0" y2="-32"/>
+            <line x1="15" y1="-15" x2="22" y2="-22"/>
+            <line x1="22" y1="0" x2="32" y2="0"/>
+            <line x1="15" y1="15" x2="22" y2="22"/>
+            <line x1="0" y1="22" x2="0" y2="32"/>
+            <line x1="-15" y1="15" x2="-22" y2="22"/>
+            <line x1="-22" y1="0" x2="-32" y2="0"/>
+            <line x1="-15" y1="-15" x2="-22" y2="-22"/>
+          </g>
+        </g>
+
+        <!-- MUTUAL ASSURED DESTRUCTION label -->
+        <text x="140" y="20" font-size="7.5" fill="#8b1a1a" text-anchor="middle" font-family="Courier Prime, monospace">MUTUAL ASSURED DESTRUCTION</text>
+        <text x="140" y="33" font-size="7" fill="#607080" text-anchor="middle" font-family="Courier Prime, monospace">"MAD" — the logic of deterrence</text>
+        <text x="140" y="46" font-size="6.5" fill="#607080" text-anchor="middle" font-family="Courier Prime, monospace">If either side fires, both are annihilated</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ERA 6: Contemporary -->
+  <div class="era">
+    <div class="era-text">
+      <span class="date">2000 CE – Present</span>
+      <h2>The Digital Battlefield</h2>
+      <p>Twenty-first century warfare has fractured into many simultaneous forms. Drone strikes allow states to project lethal force from thousands of miles away, often with little public visibility. Cyberattacks can paralyse infrastructure without a single soldier crossing a border. Social media has become a genuine theatre of war — for propaganda, recruitment, and the manipulation of public opinion.</p>
+      <p>Meanwhile, conventional conflict has returned to Europe with Russia's invasion of Ukraine (2022), demonstrating that old-fashioned artillery, drones, and fortified lines remain lethally relevant. The next great contest may be fought as much in orbit and in silicon as on any physical battlefield.</p>
+      <div class="key-tech">KEY TECH › armed drone · cyberweapon · satellite · AI targeting · hypersonic missile</div>
+    </div>
+    <div class="diagram-box" data-label="FIG VI — Modern Battlespace Layers">
+      <svg viewBox="0 0 280 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <!-- layers -->
+        <!-- space -->
+        <rect x="0" y="0" width="280" height="34" fill="#1a1208" rx="3" opacity="0.85"/>
+        <text x="10" y="21" font-size="8" fill="#b8860b" font-family="Courier Prime, monospace">SPACE</text>
+        <!-- satellite -->
+        <g transform="translate(190,17)">
+          <rect x="-4" y="-4" width="8" height="8" fill="#607080" stroke="#b8860b" stroke-width="1"/>
+          <line x1="-12" y1="0" x2="-4" y2="0" stroke="#b8860b" stroke-width="1.5"/>
+          <line x1="4" y1="0" x2="12" y2="0" stroke="#b8860b" stroke-width="1.5"/>
+          <rect x="-15" y="-3" width="3" height="6" fill="#b8860b"/>
+          <rect x="12" y="-3" width="3" height="6" fill="#b8860b"/>
+        </g>
+        <!-- signal from satellite down -->
+        <line x1="190" y1="21" x2="145" y2="66" stroke="#b8860b" stroke-width="0.8" stroke-dasharray="3,2" opacity="0.7"/>
+
+        <!-- cyberspace -->
+        <rect x="0" y="38" width="280" height="30" fill="#1a2a1a" rx="2" opacity="0.7"/>
+        <text x="10" y="57" font-size="8" fill="#4a8a4a" font-family="Courier Prime, monospace">CYBER / INFO</text>
+        <!-- binary-ish decoration -->
+        <text x="130" y="57" font-size="6" fill="#4a8a4a" opacity="0.6" font-family="Courier Prime, monospace">01101 10010 11000</text>
+
+        <!-- air layer -->
+        <rect x="0" y="72" width="280" height="36" fill="#c8dce8" opacity="0.35" rx="2"/>
+        <text x="10" y="91" font-size="8" fill="#607080" font-family="Courier Prime, monospace">AIR / DRONE</text>
+        <!-- drone shape -->
+        <g transform="translate(155,87)">
+          <rect x="-12" y="-3" width="24" height="6" rx="3" fill="#607080"/>
+          <line x1="-20" y1="0" x2="-12" y2="0" stroke="#607080" stroke-width="2"/>
+          <line x1="12" y1="0" x2="20" y2="0" stroke="#607080" stroke-width="2"/>
+          <circle cx="-22" cy="0" r="3" fill="#607080"/>
+          <circle cx="22" cy="0" r="3" fill="#607080"/>
+          <polygon points="0,3 -4,12 4,12" fill="#8b1a1a"/>
+        </g>
+
+        <!-- land layer -->
+        <rect x="0" y="112" width="280" height="36" fill="#8b7040" opacity="0.3" rx="2"/>
+        <text x="10" y="131" font-size="8" fill="#6b5020" font-family="Courier Prime, monospace">LAND</text>
+        <!-- tank silhouette simple -->
+        <g transform="translate(145,128)" fill="#607080" stroke="#1a1208" stroke-width="0.8">
+          <rect x="-18" y="-7" width="36" height="14" rx="2"/>
+          <rect x="-14" y="-12" width="20" height="8" rx="2"/>
+          <rect x="-22" y="5" width="44" height="6" rx="1" fill="#4a5560"/>
+          <line x1="6" y1="-8" x2="30" y2="-12" stroke="#1a1208" stroke-width="2"/>
+        </g>
+
+        <!-- sea layer -->
+        <rect x="0" y="152" width="280" height="40" fill="#1a3a5a" opacity="0.35" rx="2"/>
+        <text x="10" y="172" font-size="8" fill="#4a7a9a" font-family="Courier Prime, monospace">SEA / SUBSURFACE</text>
+        <!-- submarine -->
+        <g transform="translate(175,172)" fill="#607080" stroke="#1a1208" stroke-width="0.8">
+          <ellipse cx="0" cy="0" rx="28" ry="8" opacity="0.9"/>
+          <rect x="-3" y="-13" width="8" height="10" rx="1"/>
+          <line x1="26" y1="-2" x2="34" y2="-2" stroke="#607080" stroke-width="1.5"/>
+          <line x1="26" y1="2" x2="34" y2="2" stroke="#607080" stroke-width="1.5"/>
+        </g>
+
+        <!-- vertical dotted line connecting layers -->
+        <line x1="240" y1="4" x2="240" y2="188" stroke="#b8860b" stroke-width="0.6" stroke-dasharray="2,4" opacity="0.4"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Closing note -->
+  <div style="margin-top:50px; padding: 24px; border: 1.5px solid var(--brass); background: var(--fade); text-align: center;">
+    <p style="font-style: italic; font-size: 1.05rem; line-height: 1.8; color: #2a1f10; max-width: 600px; margin: 0 auto;">
+Throughout all of human history, war has never delivered lasting security or safety — for anyone. The only path forward is the one we have yet to fully choose: making security not a weapon wielded against each other, but a condition we build together.
+    </p>
+    <div class="divider" style="margin:16px auto 0;"><span></span><em>✦</em><span></span></div>
+  </div>
+
+</div>
+
+<script>
+  const eras = document.querySelectorAll('.era');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  eras.forEach(era => observer.observe(era));
+</script>
+</body>
+</html>
